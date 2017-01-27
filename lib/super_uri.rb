@@ -3,31 +3,32 @@ require 'super_uri/file_handler'
 
 module SuperUri
   class UnknownFormat < StandardError; end
+  class UnknownAction < StandardError; end
 
   class << self
 
+     def create(input, data)
+      process :create, input, data
+    end
+
     def read(input)
-      type, command = input.split('://', 2)
-      raise UnknownFormat unless handlers.keys.include?(type.to_sym)
-      handlers[type.to_sym].read(command)
-    end
-
-    def create(input, data)
-      type, command = input.split('://', 2)
-      raise UnknownFormat unless handlers.keys.include?(type.to_sym)
-      handlers[type.to_sym].create(command, data)
-    end
-
-    def delete(input)
-      type, command = input.split('://', 2)
-      raise UnknownFormat unless handlers.keys.include?(type.to_sym)
-      handlers[type.to_sym].delete(command)
+      process :read, input
     end
 
     def update(input, data)
+      process :update, input, data
+    end
+
+    def delete(input)
+      process :delete, input
+    end
+
+    def process(action, input, data=nil)
+      raise UnknownAction unless [:create, :read, :update, :delete]
       type, command = input.split('://', 2)
       raise UnknownFormat unless handlers.keys.include?(type.to_sym)
-      handlers[type.to_sym].update(command, data)
+      options = [command, data].compact
+      handlers[type.to_sym].send(action, *options)
     end
 
     def handlers
