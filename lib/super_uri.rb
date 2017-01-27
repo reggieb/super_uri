@@ -24,6 +24,12 @@ module SuperUri
       handlers[type.to_sym].delete(command)
     end
 
+    def update(input, data)
+      type, command = input.split('://', 2)
+      raise UnknownFormat unless handlers.keys.include?(type.to_sym)
+      handlers[type.to_sym].update(command, data)
+    end
+
     def handlers
       {
         file: FileHandler

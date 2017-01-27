@@ -9,6 +9,10 @@ module SuperUri
       File.read command
     end
 
+    def self.update(command, data)
+      create command, data
+    end
+
     def self.delete(command)
       FileUtils.rm command
     end

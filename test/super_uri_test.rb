@@ -27,6 +27,13 @@ class SuperUriTest < Minitest::Test
     assert_equal File.read(file_path), content
   end
 
+  def test_update_file
+    test_create_file
+    new_content = 'And some more'
+    SuperUri.update "file://#{new_file}", new_content
+    assert_equal File.read(new_file), new_content
+  end
+
   def test_delete_file
     test_create_file
     SuperUri.delete "file://#{new_file}"
