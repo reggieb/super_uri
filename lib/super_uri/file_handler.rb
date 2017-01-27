@@ -1,20 +1,20 @@
 require 'fileutils'
 module SuperUri
   module FileHandler
-    def self.create(command, data)
-      File.write command, data
+    def self.create(path, data)
+      File.write path, data
     end
 
-    def self.read(command)
-      File.read command
+    def self.read(path)
+      File.read path
     end
 
-    def self.update(command, data)
-      create command, data
+    def self.update(path, data)
+      create path, data
     end
 
-    def self.delete(command)
-      FileUtils.rm command
+    def self.delete(path)
+      FileUtils.rm path
     end
   end
 end

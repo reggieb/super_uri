@@ -25,9 +25,9 @@ module SuperUri
 
     def process(action, input, data=nil)
       raise UnknownAction unless [:create, :read, :update, :delete]
-      type, command = input.split('://', 2)
+      type, path = input.split('://', 2)
       raise UnknownFormat unless handlers.keys.include?(type.to_sym)
-      options = [command, data].compact
+      options = [path, data].compact
       handlers[type.to_sym].send(action, *options)
     end
 
